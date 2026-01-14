@@ -1,6 +1,7 @@
 #include "SFML/Graphics.hpp"
 #include "window.hpp"
 #include <iostream>
+#include <dwmapi.h>
 namespace Core {
 
     Window::~Window() {
@@ -8,7 +9,18 @@ namespace Core {
 
     void Window::create() {
         m_window.create(sf::VideoMode({ m_windowVars.width, m_windowVars.height }), m_windowVars.title, sf::Style::None);
-                // m_window.setFramerateLimit(m_frameRateLimit);
+        m_window.setFramerateLimit(m_frameRateLimit);
+
+        // transparent window
+
+#ifdef _WIN32
+
+#pragma comment(lib, "dwmapi.lib")
+
+        MARGINS margins;
+        margins.cxLeftWidth = -1;
+        DwmExtendFrameIntoClientArea(m_window.getNativeHandle(), &margins);
+#endif
     }
 
     void Window::update() {
@@ -17,6 +29,9 @@ namespace Core {
         if (event->is<sf::Event::Closed>()) {
             m_window.close();
         }
+
+
+
     }
 
     bool Window::shouldClose() const {

@@ -18,6 +18,10 @@ target_link_libraries(Core
         sfml-system
 )
 
+if(WIN32)
+    target_link_libraries(Core PRIVATE dwmapi)
+endif()
+
 target_sources(Core PRIVATE ${CORE_SOURCES})
 
 target_compile_options(Core PRIVATE -O3 -ffast-math)

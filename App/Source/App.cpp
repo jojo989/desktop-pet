@@ -1,6 +1,7 @@
 #include "App.hpp"
 #include "SFML/System/Clock.hpp"  // Add this for sf::Clock
 #include <iostream>
+#include <SFML/OpenGL.hpp>
 namespace App {
 
     Application::Application(const Core::WindowVariables& vars)

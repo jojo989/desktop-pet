@@ -35,7 +35,7 @@ namespace Core {
 
     private:
         sf::RenderWindow m_window;
-        uint16_t m_frameRateLimit{ 60 };
+        uint16_t m_frameRateLimit{ 30 };
 
     };
 

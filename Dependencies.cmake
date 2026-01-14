@@ -29,3 +29,5 @@ if(USE_SFML)
 else()
 	message(STATUS "Building without SFML (USE_SFML=OFF).")
 endif()
+
+
