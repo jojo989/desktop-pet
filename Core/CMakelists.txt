@@ -1,22 +1,31 @@
-cmake_minimum_required(VERSION 3.28.1)
-project(DesktopPet VERSION 0.1
+cmake_minimum_required(VERSION 3.15)
 
-                    DESCRIPTION "modern solution to desktop pets!"
+add_library(Core STATIC)
 
-                    LANGUAGES CXX)
-
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
-if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build." FORCE)
-endif()
+file(GLOB_RECURSE CORE_SOURCES CONFIGURE_DEPENDS
+	"${CMAKE_CURRENT_SOURCE_DIR}/Source/*.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Source/*.c"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Include/*.hpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/Include/*.h"
+)
 
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-include(${CMAKE_SOURCE_DIR}/Dependencies.cmake)
+target_link_libraries(Core
+    PUBLIC
+        sfml-graphics
+        sfml-window
+        sfml-system
+)
 
-add_subdirectory(Core)
-add_subdirectory(App)
+target_sources(Core PRIVATE ${CORE_SOURCES})
+
+target_compile_options(Core PRIVATE -O3 -ffast-math)
+
+target_include_directories(Core PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Include>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/Source>
+	$<INSTALL_INTERFACE:include>
+)
+
+target_compile_features(Core PUBLIC cxx_std_23)
