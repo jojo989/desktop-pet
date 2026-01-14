@@ -1,0 +1,16 @@
+add_executable(NADP
+	${CMAKE_CURRENT_SOURCE_DIR}/Source/main.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/Source/App.cpp
+)
+
+target_include_directories(NADP PRIVATE
+	${CMAKE_CURRENT_SOURCE_DIR}/Source
+	${CMAKE_SOURCE_DIR}/Core/Source
+)
+
+target_link_libraries(NADP PRIVATE Core)
+if(TARGET SFML::Graphics)
+	target_link_libraries(NADP PRIVATE SFML::Graphics SFML::Window SFML::System)
+endif()
+
+target_compile_features(NADP PRIVATE cxx_std_23)
