@@ -2,6 +2,7 @@
 #include <fstream>
 #include "./Include/json.hpp"
 #include <iostream>
+#include <format>
 
 Pet::Pet() {
     loadPet("oneko");
@@ -65,8 +66,8 @@ PetState Pet::stringToPetState(const std::string& stateStr) {
 }
 
 bool Pet::loadPet(const std::string& petName) {
-    const std::string basePath = "pets/" + petName + "/";
-    const std::string jsonPath = basePath + petName + ".json";
+    const std::string basePath{ "pets/" + petName + "/" };
+    const std::string jsonPath{ basePath + petName + ".json" };
 
     m_animations.clear();
     m_state = PetState::Idle;

@@ -19,6 +19,10 @@ namespace Core {
 
         MARGINS margins;
         margins.cxLeftWidth = -1;
+        margins.cxRightWidth = -1;
+        margins.cyTopHeight = -1;
+        margins.cyBottomHeight = -1;
+
         DwmExtendFrameIntoClientArea(m_window.getNativeHandle(), &margins);
 #endif
     }

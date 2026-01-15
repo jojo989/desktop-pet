@@ -16,12 +16,7 @@ namespace App {
 
         m_window.getRenderWindow().setActive(true);
 
-        if (!m_pet.loadPet("oneko")) {
-            std::cerr << "Fatal: Failed to load pet!\n";
-            return;
-        }
-
-        m_pet.setPosition({ 30, 30 });
+        m_pet.setPosition({ 0, 0 });
         m_pet.setState(PetState::Walk);
 
         auto& renderWindow{ m_window.getRenderWindow() };
