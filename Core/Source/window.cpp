@@ -3,6 +3,7 @@
 #include <iostream>
 #ifdef _WIN32
 #include <dwmapi.h>
+#include <windows.h>
 #endif
 namespace Core {
 
@@ -26,6 +27,12 @@ namespace Core {
         margins.cyBottomHeight = -1;
 
         DwmExtendFrameIntoClientArea(m_window.getNativeHandle(), &margins);
+
+        // make window unclickeable
+        long cur_style = GetWindowLong(m_window.getNativeHandle(), GWL_EXSTYLE);
+        SetWindowLong(m_window.getNativeHandle(), GWL_EXSTYLE, cur_style | WS_EX_TRANSPARENT | WS_EX_LAYERED);
+
+        SetWindowPos(m_window.getNativeHandle(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_ASYNCWINDOWPOS | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
 #endif
     }
 
