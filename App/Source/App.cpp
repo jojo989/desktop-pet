@@ -17,7 +17,7 @@ namespace App {
         m_window.getRenderWindow().setActive(true);
 
         m_pet.setPosition({ 0, 0 });
-        m_pet.setState(PetState::Walk);
+        m_pet.setState(PetState::WalkN);
 
         auto& renderWindow{ m_window.getRenderWindow() };
         sf::Clock clock;

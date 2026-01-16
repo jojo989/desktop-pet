@@ -8,7 +8,16 @@
 
 enum class PetState {
     Idle,
-    Walk,
+    // NORTH, SOUTH, EAST, WEST
+    WalkN,
+    WalkNE,
+    WalkNW,
+    WalkW,
+    WalkS,
+    WalkSW,
+    WalkSE,
+    WalkE,
+
     Sleep,
     Border,
     Shocked

@@ -54,11 +54,20 @@ void Pet::update(float dt) {
 
 PetState Pet::stringToPetState(const std::string& stateStr) {
     static const std::unordered_map<std::string, PetState> stateMap = {
-        {"idle", PetState::Idle},
-        {"walk", PetState::Walk},
-        {"sleep", PetState::Sleep},
-        {"border", PetState::Border},
-        {"shocked", PetState::Shocked}
+        {"idle",    PetState::Idle},
+        {"sleep",   PetState::Sleep},
+        {"border",  PetState::Border},
+        {"shocked", PetState::Shocked},
+
+        // walk states
+        {"walk_n",  PetState::WalkN},
+        {"walk_ne", PetState::WalkNE},
+        {"walk_e",  PetState::WalkE},
+        {"walk_se", PetState::WalkSE},
+        {"walk_s",  PetState::WalkS},
+        {"walk_sw", PetState::WalkSW},
+        {"walk_w",  PetState::WalkW},
+        {"walk_nw", PetState::WalkNW}
     };
 
     auto it = stateMap.find(stateStr);
