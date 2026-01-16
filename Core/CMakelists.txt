@@ -10,7 +10,6 @@ file(GLOB_RECURSE CORE_SOURCES CONFIGURE_DEPENDS
 )
 
 
-
 target_link_libraries(Core
     PUBLIC
         sfml-graphics
