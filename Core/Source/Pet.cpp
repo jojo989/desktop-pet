@@ -5,7 +5,6 @@
 #include <format>
 
 Pet::Pet() {
-    loadPet("oneko");
 
 }
 
