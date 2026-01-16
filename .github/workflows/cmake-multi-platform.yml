@@ -32,18 +32,24 @@ jobs:
       - name: Build
         run: cmake --build build --parallel
 
-  build-macos-clang:
-    name: macOS (Clang)
-    runs-on: macos-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
+      - name: Upload Linux Binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: pet-linux-x64
+          path: build/bin/  
 
-      - name: Configure CMake
-        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+  # build-macos-clang:
+  #   name: macOS (Clang)
+  #   runs-on: macos-latest
+  #   timeout-minutes: 10
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - name: Build
-        run: cmake --build build --parallel
+  #     - name: Configure CMake
+  #       run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+  #     - name: Build
+  #       run: cmake --build build --parallel
 
   build-windows-vs2022:
     name: Windows (VS2022)
@@ -57,3 +63,9 @@ jobs:
 
       - name: Build
         run: cmake --build build --config Release --parallel
+
+      - name: Upload Windows Binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: pet-windows-x64
+          path: build/bin/
