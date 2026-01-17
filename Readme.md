@@ -4,17 +4,22 @@ so, this is a modern solution to desktop pets / reinventation of oneko, but inst
 
 #### made in sfml 3, c++ and with love!
 
+## TO-DO:
+- [ ] finish the first version, currently focusing on windows
+- [ ] Full linux support
+- [ ] Dialogs system
+- [ ] window borders interaction system
+- [ ] optimizing
+- [ ] make a wiki / documentation
+- [ ] take in account your ideas!
+
   
+## Missing features / current wip features
 
-TO-DO:
- - [ ] finish the first version, currently focusing on windows
- - [ ] Full linux support
- - [ ] Dialogs system
- - [ ] window borders interaction system
- - [ ] optimizing
- - [ ] make a wiki / documentation
- - [ ] take in account your ideas!
-
+ - move the pet to the cursor, and updating the sprites properly
+ - proper linux transparent and click-through window
+ - i dont know
 
 ## notes
+
 i started this project as a "my first big, (not so) organized, "serious" project, feedback is appreciated!
