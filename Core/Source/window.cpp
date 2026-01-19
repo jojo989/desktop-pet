@@ -37,13 +37,13 @@ namespace Core {
     }
 
     void Window::update() {
-        const std::optional<sf::Event> event = m_window.pollEvent();
-        if (!event) { return; }
-        if (event->is<sf::Event::Closed>()) {
-            m_window.close();
+        while (const std::optional<sf::Event> event = m_window.pollEvent()) {
+
+            if (event->is<sf::Event::Closed>()) {
+                m_window.close();
+            }
+
         }
-
-
 
     }
 

@@ -5,7 +5,8 @@
 #include "App.hpp"
 
 int main(int argc, char** argv) {
-    App::Application mainWindow{ {"SFML UWU", 500, 500} };
+    const auto screen{ sf::VideoMode::getDesktopMode() };
+    App::Application mainWindow{ {"SFML UWU", static_cast<uint16_t>(screen.size.x - 1), static_cast<uint16_t>(screen.size.y - 1)} };
 /*
 
 if (argc > 2 || argc < 1) {
@@ -15,8 +16,12 @@ if (argc > 2 || argc < 1) {
 */
 
 
-    std::cout << "argc: " << argv[0] << '\n';
+    std::cout << "argv: " << argv[1] << '\n';
     mainWindow.m_pet.loadPet(std::string{ argv[1] });
+    mainWindow.m_pet.setSpeed(std::stof(argv[2]));
+    mainWindow.m_pet.setScale(std::stof(argv[3]));
+
+
 
 
 

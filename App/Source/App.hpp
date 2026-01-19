@@ -1,5 +1,6 @@
 #include "../../Core/Source/window.hpp"
 #include "../../Core/Source/Pet.hpp"
+#include <cmath>
 namespace App {
 
     class Application {
