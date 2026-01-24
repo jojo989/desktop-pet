@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28.1)
-project(DesktopPet VERSION 0.2
+project(DesktopPet VERSION 0.91
 
                     DESCRIPTION "modern solution to desktop pets!"
                     LANGUAGES CXX)
