@@ -1,5 +1,5 @@
 #include "App.hpp"
-#include "SFML/System/Clock.hpp"  // Add this for sf::Clock
+#include "SFML/System/Clock.hpp"
 #include <iostream>
 #include <SFML/OpenGL.hpp>
 #include "../../Core/Source/Include/utils.hpp"
