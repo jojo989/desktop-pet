@@ -6,10 +6,8 @@
 #include <cmath>
 #include "./Include/utils.hpp"
 
-
 Pet::Pet() {
 }
-
 
 std::string directionToString(RunningDirection dir) {
     switch (dir) {
@@ -62,9 +60,13 @@ void Pet::draw(sf::RenderWindow& win) {
     if (anim.frameIndex >= anim.frames.size()) anim.frameIndex = 0;
 
     sf::Sprite sprite(anim.frames.at(anim.frameIndex));
+
+    // wow wow wow
+    sf::FloatRect bounds = sprite.getLocalBounds();
+    sprite.setOrigin({ bounds.size.x / 2.f, bounds.size.y / 2.f });
+
     sprite.setPosition(m_position);
     sprite.setScale({ m_scale, m_scale });
-
 
     win.draw(sprite);
 }
@@ -72,6 +74,7 @@ void Pet::draw(sf::RenderWindow& win) {
 void Pet::setState(PetState s) {
     if (s == m_state) return;
     m_state = s;
+    m_idleTimer.restart();
     m_animationTimer = 0.f;
 
     std::string animKey = getCurrentAnimKey();
@@ -100,33 +103,35 @@ void Pet::update(float dt) {
     if (m_animations.find(animKey) == m_animations.end()) {
         animKey = stateToString(m_state);
     }
-
     if (m_animations.count(animKey)) {
         auto& anim = m_animations[animKey];
         if (!anim.frames.empty() && anim.fps > 0.f) {
             m_animationTimer += dt;
-            float timePerFrame = 1.0f / anim.fps;
-            if (m_animationTimer >= timePerFrame) {
-                m_animationTimer -= timePerFrame;
-                ++anim.frameIndex;
-                if (anim.frameIndex >= anim.frames.size()) {
-                    anim.frameIndex = anim.loop ? 0 : anim.frames.size() - 1;
-                }
+            if (m_animationTimer >= 1.0f / anim.fps) {
+                m_animationTimer = 0;
+                anim.frameIndex = (anim.frameIndex + 1) % anim.frames.size();
             }
         }
     }
 
-    sf::Vector2f m_mousePosition = sf::Vector2f(sf::Mouse::getPosition());
-    float distance = utils::distanceOf<float>(m_position, m_mousePosition);
+    sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition());
+    sf::Vector2f targetPos = mousePos + sf::Vector2f(0.0f, 50.0f);
 
-    float triggerDist = 100.0f;
-    float stopDist = 15.0f; // jittering fix - 15 px
+    float distance = utils::distanceOf<float>(m_position, targetPos);
+
+    constexpr float triggerDist = 150.0f;
+    constexpr float stopDist = 15.0f;
 
     switch (m_state) {
         case PetState::Idle:
+            if (m_idleTimer.getElapsedTime().asSeconds() >= 5.5f) {
+                setState(PetState::Sleep);
+                break;
+            }
+            break;
+        case PetState::Sleep:
             if (distance > triggerDist) {
                 setState(PetState::Shocked);
-                m_idleTimer.restart();
             }
             break;
 
@@ -141,15 +146,13 @@ void Pet::update(float dt) {
                 setState(PetState::Idle);
             }
             else {
-                sf::Vector2f diff = m_mousePosition - m_position;
-                sf::Vector2f normalizedDir = diff / distance;
+                sf::Vector2f diff = targetPos - m_position;
+                sf::Vector2f dir = diff.normalized();
 
-                // move pet
-                m_position += (normalizedDir * m_speed) * dt;
+                m_position += (dir * m_speed) * dt;
 
-                float angleRad = std::atan2(diff.y, diff.x);
-                float angleDeg = angleRad * 180.f / 3.14159265f;
-                m_currDirection = getDirectionFromAngle(angleDeg);
+                float angle = std::atan2(diff.y, diff.x) * 180.f / 3.14159f;
+                m_currDirection = getDirectionFromAngle(angle);
             }
             break;
 
@@ -229,6 +232,10 @@ std::optional<sf::Sprite> Pet::getCurrentSprite() const {
         sf::Sprite sprite(anim.frames[anim.frameIndex]);
         sprite.setPosition(m_position);
         sprite.setScale({ m_scale, m_scale });
+
+        sf::FloatRect bounds = sprite.getLocalBounds();
+        sprite.setOrigin({ bounds.size.x / 2.f, bounds.size.y / 2.f });
+
         return sprite;
     }
 

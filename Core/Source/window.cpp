@@ -1,10 +1,14 @@
 #include "SFML/Graphics.hpp"
 #include "window.hpp"
 #include <iostream>
+
 #ifdef _WIN32
 #include <dwmapi.h>
 #include <windows.h>
 #endif
+
+
+
 namespace Core {
 
     Window::~Window() {

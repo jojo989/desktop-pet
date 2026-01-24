@@ -6,7 +6,7 @@ namespace utils {
 
     template <typename T>
     float distanceOf(sf::Vector2<T> x, sf::Vector2<T> y) {
-        return std::sqrtf(
+        return std::sqrt(
             powf((y.x - x.x), 2) + powf((y.y - x.y), 2)
         );
     }
