@@ -37,7 +37,7 @@ namespace App {
             m_pet.update(dt);
 
             //draw things!
-            renderWindow.clear(sf::Color::Transparent);
+            renderWindow.clear(sf::Color(0, 0, 0, 0));
             m_pet.draw(renderWindow);
             renderWindow.display();
 

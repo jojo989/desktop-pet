@@ -21,6 +21,15 @@ if(WIN32)
     target_link_libraries(Core PRIVATE dwmapi)
 endif()
 
+
+
+if(UNIX AND NOT APPLE)
+    target_include_directories(Core PRIVATE ${X11_INCLUDE_DIR})
+    
+    target_link_libraries(Core PRIVATE ${X11_LIBRARIES} ${X11_Xext_LIB})
+endif()
+
+
 target_sources(Core PRIVATE ${CORE_SOURCES})
 
 target_compile_options(Core PRIVATE -O3 -ffast-math)

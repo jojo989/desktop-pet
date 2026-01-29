@@ -7,6 +7,11 @@
 #include <windows.h>
 #endif
 
+#ifdef __linux__
+#include <X11/Xlib.h>
+#include <X11/extensions/shape.h>
+#endif
+
 
 
 namespace Core {
@@ -37,6 +42,18 @@ namespace Core {
         SetWindowLong(m_window.getNativeHandle(), GWL_EXSTYLE, cur_style | WS_EX_TRANSPARENT | WS_EX_LAYERED);
 
         SetWindowPos(m_window.getNativeHandle(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_ASYNCWINDOWPOS | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
+#endif
+
+
+#ifdef __linux__
+        Display* display = XOpenDisplay(NULL);
+        Window w = m_window.getNativeHandle();
+
+        XShapeCombineRectangles(display, w, ShapeInput, 0, 0, NULL, 0, ShapeSet, YXBanded);
+
+        XFlush(display);
+        XCloseDisplay(display);
+
 #endif
     }
 
