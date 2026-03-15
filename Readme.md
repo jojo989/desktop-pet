@@ -4,8 +4,9 @@ so, this is a modern solution to desktop pets / reinventation of oneko, but inst
 #### made in sfml 3, c++ and with love!
 
 ## TO-DO:
-- [ ] finish the first version, currently focusing on windows
-- [ ] Full linux support
+- [ ] finish x11 support
+- [ ] finish the first version, currently focusing on linux
+- [ ] Full Windows support
 - [ ] Dialogs system
 - [ ] window borders interaction system
 - [ ] optimizing
