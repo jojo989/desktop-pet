@@ -1,0 +1,15 @@
+BasedOnStyle: Microsoft
+IndentWidth: 4
+TabWidth: 4
+ColumnLimit: 0
+
+BreakBeforeBraces: Attach
+IndentCaseLabels: false
+SpacesInContainerLiterals: true
+
+AllowShortBlocksOnASingleLine: Always
+AllowShortFunctionsOnASingleLine: Inline
+
+
+Cpp11BracedListStyle: false
+PointerAlignment: Left

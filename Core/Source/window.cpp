@@ -1,4 +1,7 @@
+#include "SFML/Window/Window.hpp"
 #include "SFML/Graphics.hpp"
+#include "SFML/Window/WindowEnums.hpp"
+#include "SFML/Window/WindowHandle.hpp"
 #include "window.hpp"
 #include <iostream>
 
@@ -8,67 +11,77 @@
 #endif
 
 #ifdef __linux__
+#include <X11/Xatom.h>
 #include <X11/Xlib.h>
+#include <X11/extensions/Xfixes.h>
 #include <X11/extensions/shape.h>
+
+#undef None
 #endif
-
-
 
 namespace Core {
 
-    Window::~Window() {
-    }
+Window::~Window() {}
 
-    void Window::create() {
-        m_window.create(sf::VideoMode({ m_windowVars.width, m_windowVars.height }), m_windowVars.title, sf::Style::None);
-        m_window.setFramerateLimit(m_frameRateLimit);
+void Window::create() {
+    m_window.create(sf::VideoMode({ m_windowVars.width, m_windowVars.height }),
+                    "caca", sf::Style::None);
+    m_window.setFramerateLimit(m_frameRateLimit);
 
-        // transparent window
+    // transparent window
 
 #ifdef _WIN32
 
 #pragma comment(lib, "dwmapi.lib")
 
-        MARGINS margins;
-        margins.cxLeftWidth = -1;
-        margins.cxRightWidth = -1;
-        margins.cyTopHeight = -1;
-        margins.cyBottomHeight = -1;
+    MARGINS margins;
+    margins.cxLeftWidth = -1;
+    margins.cxRightWidth = -1;
+    margins.cyTopHeight = -1;
+    margins.cyBottomHeight = -1;
 
-        DwmExtendFrameIntoClientArea(m_window.getNativeHandle(), &margins);
+    DwmExtendFrameIntoClientArea(m_window.getNativeHandle(), &margins);
 
-        // make window unclickeable
-        long cur_style = GetWindowLong(m_window.getNativeHandle(), GWL_EXSTYLE);
-        SetWindowLong(m_window.getNativeHandle(), GWL_EXSTYLE, cur_style | WS_EX_TRANSPARENT | WS_EX_LAYERED);
+    // make window unclickeable
+    long cur_style = GetWindowLong(m_window.getNativeHandle(), GWL_EXSTYLE);
+    SetWindowLong(m_window.getNativeHandle(), GWL_EXSTYLE,
+                  cur_style | WS_EX_TRANSPARENT | WS_EX_LAYERED);
 
-        SetWindowPos(m_window.getNativeHandle(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_ASYNCWINDOWPOS | SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
+    SetWindowPos(m_window.getNativeHandle(), HWND_TOPMOST, 0, 0, 0, 0,
+                 SWP_NOACTIVATE | SWP_ASYNCWINDOWPOS | SWP_NOACTIVATE |
+                     SWP_NOMOVE | SWP_NOSIZE);
 #endif
-
 
 #ifdef __linux__
-        Display* display = XOpenDisplay(NULL);
-        Window w = m_window.getNativeHandle();
+    Display* display = XOpenDisplay(NULL);
+    sf::WindowHandle w = m_window.getNativeHandle();
 
-        XShapeCombineRectangles(display, w, ShapeInput, 0, 0, NULL, 0, ShapeSet, YXBanded);
+    XserverRegion region = XFixesCreateRegion(display, NULL, 0);
+    XFixesSetWindowShapeRegion(display, w, ShapeInput, 0, 0, region);
+    XFixesDestroyRegion(display, region);
 
-        XFlush(display);
-        XCloseDisplay(display);
+    Atom property = XInternAtom(display, "_NET_WM_WINDOW_OPACITY", False);
+    unsigned long opacity = 0xffffffff;
+
+    XChangeProperty(display, w, property, XA_CARDINAL, 32, PropModeReplace,
+                    (unsigned char*)&opacity, 1);
+
+    XFlush(display);
+    XCloseDisplay(display);
 
 #endif
-    }
+}
 
-    void Window::update() {
-        while (const std::optional<sf::Event> event = m_window.pollEvent()) {
+void Window::update() {
+    while (const std::optional<sf::Event> event = m_window.pollEvent()) {
 
-            if (event->is<sf::Event::Closed>()) {
-                m_window.close();
-            }
-
+        if (event->is<sf::Event::Closed>()) {
+            m_window.close();
         }
-
-    }
-
-    bool Window::shouldClose() const {
-        return !m_window.isOpen();
     }
 }
+
+bool Window::shouldClose() const {
+    return !m_window.isOpen();
+}
+} // namespace Core
